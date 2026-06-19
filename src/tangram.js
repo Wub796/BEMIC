@@ -394,11 +394,26 @@ export class TangramGame {
     const rotDiff = Math.abs((piece.rotation.z - target.rot) % (Math.PI * 2));
     const rotDiffNorm = Math.min(rotDiff, Math.PI * 2 - rotDiff);
 
-    // Loosened snapping thresholds for preschool children: distance < 0.85 units and rotation diff < 30 degrees (0.52 rad)
-    if (dist < 0.85 && rotDiffNorm < 0.52) {
+    // Loosened snapping thresholds for preschool children: distance < 0.85 units
+    // For the square (id === 5), we ignore rotation grading entirely due to 4-fold symmetry.
+    const isSquare = id === 5;
+    const rotationFits = isSquare || (rotDiffNorm < 0.52);
+
+    if (dist < 0.85 && rotationFits) {
       piece.position.set(target.x, target.y, 0.05);
-      piece.rotation.z = target.rot;
-      piece.userData.targetRot = target.rot;
+      
+      if (isSquare) {
+        // Snap square to the nearest symmetric 90-degree alignment relative to target
+        const diff = piece.rotation.z - target.rot;
+        const offset = Math.round(diff / (Math.PI / 2)) * (Math.PI / 2);
+        const finalRot = target.rot + offset;
+        piece.rotation.z = finalRot;
+        piece.userData.targetRot = finalRot;
+      } else {
+        piece.rotation.z = target.rot;
+        piece.userData.targetRot = target.rot;
+      }
+
       piece.userData.snapped = true;
       piece.userData.velocity = 0;
       piece.userData.rotVelocity = 0;
