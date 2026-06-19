@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Bilingual Early Mathematics Innovation Center (BEMIC) led by Dr. Haiping Hao. Early childhood STEM learning, Chinese-English bilingual immersion, and teacher training.">
+  <meta name="keywords" content="Bilingual Education, Early Math, STEM readiness, Dr. Haiping Hao, Chinese-English immersion, Suanpan, Abacus, Houston, Texas">
+  <title>Bilingual Early Mathematics Innovation Center - BEMIC</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><polygon points='50,5 95,38 78,95 22,95 5,38' fill='%2300f2fe'/></svg>" />
+</head>
+<body>
+
+  <!-- Fixed Sticky Header -->
+  <header>
+    <div class="header-container">
+      <a href="#" class="logo">
+        <span class="logo-icon"></span>
+        <div class="logo-text-wrap">
+          <span class="logo-acronym">BEMIC</span>
+          <span class="logo-fullname">Bilingual Early Mathematics Innovation Center</span>
+        </div>
+      </a>
+      
+      <nav>
+        <a href="#about" class="nav-link" data-i18n="nav_about">About Founder</a>
+        <a href="#playground" class="nav-link" data-i18n="nav_abacus">3D Playground</a>
+        <a href="#pillars" class="nav-link" data-i18n="nav_pillars">Our Pillars</a>
+        <a href="#research" class="nav-link" data-i18n="nav_research">Research</a>
+        <a href="#contact" class="nav-link" data-i18n="nav_contact">Contact</a>
+      </nav>
+
+      <button class="lang-toggle" id="lang-toggle" aria-label="Toggle language">
+        <span class="lang-btn active" id="lang-en">EN</span>
+        <span class="lang-divider"></span>
+        <span class="lang-btn" id="lang-zh">中文</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <div id="hero-canvas-container"></div>
+    <div class="hero-content">
+      <div class="hero-brand-eyebrow" data-i18n="hero_brand_eyebrow">Bilingual Early Mathematics Innovation Center</div>
+      <h1 class="hero-title" data-i18n="hero_title">Cultivating Bilingual Thinkers, Shaping Future Innovators</h1>
+      <p class="hero-subtitle" data-i18n="hero_subtitle">The Bilingual Early Mathematics Innovation Center (BEMIC) merges research-backed early math learning with Chinese-English bilingual immersion to give children a cognitive and creative edge.</p>
+      <div class="hero-ctas">
+        <a href="#pillars" class="btn btn-primary" data-i18n="hero_cta_explore">Explore Pillars</a>
+        <a href="#playground" class="btn btn-secondary" data-i18n="hero_cta_abacus">Try 3D Abacus</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Founder Section -->
+  <section class="about scroll-reveal" id="about">
+    <div class="container-width">
+      <div class="about-grid">
+        <div class="about-info">
+          <h2 data-i18n="about_title">Meet Our Founder</h2>
+          <div class="about-subtitle" data-i18n="about_subtitle">Dr. Haiping Hao</div>
+          <p class="about-bio" data-i18n="about_bio">Dr. Haiping Hao is an accomplished educator, researcher, and curriculum developer with over 15 years of leadership in early childhood mathematics and bilingual education. She holds a Ph.D. in Curriculum & Instruction with a specialization in Early Mathematics Education and completed postdoctoral research at Texas A&M University. Having led educational initiatives in both Shanghai and the United States, she brings a unique global perspective to early STEM learning.</p>
+          
+          <ul class="qualifications-list">
+            <li>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+              </svg>
+              <span data-i18n="about_q1">Ph.D. in Curriculum and Instruction (Early Math Education)</span>
+            </li>
+            <li>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+              </svg>
+              <span data-i18n="about_q2">Postdoctoral Research at Texas A&M University</span>
+            </li>
+            <li>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+              </svg>
+              <span data-i18n="about_q3">12+ Years of Educational Leadership in Shanghai, China</span>
+            </li>
+            <li>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+              </svg>
+              <span data-i18n="about_q4">Child Development Associate (CDA) Credential & Texas Leadership Candidate</span>
+            </li>
+            <li>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+              </svg>
+              <span data-i18n="about_q5">Experienced in National Council of Teachers of Mathematics (NCTM) Projects</span>
+            </li>
+          </ul>
+        </div>
+        
+        <div class="about-image-container">
+          <div class="profile-card-glow"></div>
+          <div class="about-profile-card spotlight-card">
+            <img src="/src/assets/dr-haiping-hao.jpg" alt="Dr. Haiping Hao" class="about-profile-img" id="founder-photo">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3D Abacus Section -->
+  <section class="abacus scroll-reveal" id="playground">
+    <div class="container-width">
+      <div class="abacus-layout">
+        <div class="abacus-text">
+          <h2 data-i18n="abacus_title">Interactive 3D Suanpan (算盘)</h2>
+          <p data-i18n="abacus_instructions">Click beads to slide them towards or away from the center divider beam. Upper beads are worth 5, and lower beads are worth 1. Observe the live representation of decimal values in English, Pinyin, and Chinese characters.</p>
+        </div>
+
+        <div class="abacus-playground">
+          <div class="abacus-canvas-wrap">
+            <div id="abacus-canvas" style="width: 100%; height: 100%;"></div>
+            <div class="abacus-3d-hint">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239a9.002 9.002 0 0112.572 12.57M4.69 4.69a9 9 0 0012.628 12.628L4.69 4.69z" />
+              </svg>
+              <span>Click Beads to Slide</span>
+            </div>
+          </div>
+
+          <div class="abacus-hud glass-panel">
+            <div class="readout-panel">
+              <div class="readout-label" data-i18n="abacus_value_label">Current Value</div>
+              <div class="readout-digits" id="readout-number">0</div>
+              
+              <div class="readout-translations">
+                <!-- English readout -->
+                <div class="readout-lang-box primary-border">
+                  <span class="lang-tag">English</span>
+                  <span class="lang-val" id="readout-en">Zero</span>
+                </div>
+                <!-- Chinese & Pinyin readout -->
+                <div class="readout-lang-box">
+                  <span class="lang-tag">中文 / Pinyin</span>
+                  <span class="lang-val" id="readout-zh">零</span>
+                  <span class="lang-pinyin" id="readout-pinyin">líng</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Challenge Box -->
+            <div class="challenge-box" id="challenge-box">
+              <div class="challenge-header">
+                <span data-i18n="abacus_mode_challenge">Challenge Mode</span>
+                <div><span data-i18n="abacus_score">Score</span>: <span id="challenge-score">0</span></div>
+              </div>
+              <div class="challenge-text">
+                <span data-i18n="abacus_challenge_target">Can you represent:</span>
+                <span id="challenge-number">12</span>?
+              </div>
+              <div class="challenge-success" id="challenge-success">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+                <span data-i18n="abacus_challenge_success">Perfect! Well done!</span>
+              </div>
+            </div>
+
+            <div class="abacus-controls">
+              <div class="hud-buttons">
+                <button class="btn btn-secondary" id="btn-reset" data-i18n="abacus_reset">Reset Abacus</button>
+                <button class="btn btn-secondary btn-icon-only" id="btn-mute" aria-label="Mute sound" style="padding: 0.8rem 1rem; display: flex; align-items: center; justify-content: center; width: 48px; flex: 0 0 auto;">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" id="icon-sound-on">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" id="icon-sound-off" style="display:none;">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15zm10.707-6.293l-4 4m0-4l4 4" />
+                  </svg>
+                </button>
+                <button class="btn btn-primary" id="btn-challenge" data-i18n="abacus_mode_challenge">Start Challenge</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pillars Section -->
+  <section class="pillars scroll-reveal" id="pillars">
+    <div class="container-width">
+      <div class="pillars-intro">
+        <h2 data-i18n="pillar_title">Four Core Pillars</h2>
+        <p data-i18n="pillar_subtitle">Integrating language, logic, and professional coaching for holistic educational impact.</p>
+      </div>
+
+      <div class="pillars-grid">
+        <!-- Pillar 1 -->
+        <div class="pillar-card glass-panel spotlight-card">
+          <div class="pillar-icon-box">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <h3 data-i18n="pillar1_title">Early Mathematics</h3>
+          <p data-i18n="pillar1_text">Developmentally appropriate early math for children ages 3-8 focusing on number sense, spatial awareness, and play-based STEM exploration.</p>
+        </div>
+
+        <!-- Pillar 2 -->
+        <div class="pillar-card glass-panel spotlight-card">
+          <div class="pillar-icon-box">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5c-.313 1.565-.99 3.012-1.958 4.228M10.793 9.228A18.147 18.147 0 0112 13c-.415 1.162-1.035 2.308-1.87 3.178m-2.227-2.14a11.642 11.642 0 01-2.427-4.636" />
+            </svg>
+          </div>
+          <h3 data-i18n="pillar2_title">Bilingual Immersion</h3>
+          <p data-i18n="pillar2_text">Dual Chinese-English immersion designed to strengthen cognitive flexibility, language acquisition, and cultural competency.</p>
+        </div>
+
+        <!-- Pillar 3 -->
+        <div class="pillar-card glass-panel spotlight-card">
+          <div class="pillar-icon-box">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
+            </svg>
+          </div>
+          <h3 data-i18n="pillar3_title">Teacher Training</h3>
+          <p data-i18n="pillar3_text">Professional workshops, curriculum coaching, and certification pathways to empower early childhood educators.</p>
+        </div>
+
+        <!-- Pillar 4 -->
+        <div class="pillar-card glass-panel spotlight-card">
+          <div class="pillar-icon-box">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+          </div>
+          <h3 data-i18n="pillar4_title">Parent Education</h3>
+          <p data-i18n="pillar4_text">Home-based learning frameworks and parent workshops supporting school readiness and social-emotional growth.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Research Section -->
+  <section class="research scroll-reveal" id="research">
+    <div class="container-width">
+      <div class="research-intro">
+        <h2 data-i18n="research_title">The Science of Early Learning</h2>
+        <p data-i18n="research_subtitle">Why Bilingual Early Mathematics Matters</p>
+      </div>
+
+      <div class="research-grid">
+        <!-- Point 1 -->
+        <div class="research-card glass-panel spotlight-card">
+          <div class="research-num">01</div>
+          <h3 data-i18n="research1_title">STEM Predictability</h3>
+          <p data-i18n="research1_text">Research consistently shows that early childhood mathematics skills are the strongest predictor of later academic achievement, including reading and literacy.</p>
+        </div>
+
+        <!-- Point 2 -->
+        <div class="research-card glass-panel spotlight-card">
+          <div class="research-num">02</div>
+          <h3 data-i18n="research2_title">Cognitive Flexibility</h3>
+          <p data-i18n="research2_text">Bilingual immersion strengthens executive function, enhances working memory, and develops superior problem-solving skills starting in early childhood.</p>
+        </div>
+
+        <!-- Point 3 -->
+        <div class="research-card glass-panel spotlight-card">
+          <div class="research-num">03</div>
+          <h3 data-i18n="research3_title">Teacher Capacity</h3>
+          <p data-i18n="research3_text">High-quality early STEM learning depends directly on teacher training. BEMIC bridges the educator gap with research-backed workshops.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="contact scroll-reveal" id="contact">
+    <div class="container-width">
+      <div class="contact-grid">
+        <div class="contact-text">
+          <h2 data-i18n="contact_title">Get In Touch</h2>
+          <p data-i18n="contact_subtitle">Collaborate with BEMIC as a parent, educator, or partner.</p>
+          
+          <div class="contact-info-list">
+            <div class="contact-info-item">
+              <div class="contact-info-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </div>
+              <div class="contact-info-detail">
+                <h4>Location</h4>
+                <p>Houston, Texas (National Expansion)</p>
+              </div>
+            </div>
+            
+            <div class="contact-info-item">
+              <div class="contact-info-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <div class="contact-info-detail">
+                <h4>Email</h4>
+                <p><a href="mailto:emmahao2022@gmail.com" style="color: var(--primary); text-decoration: underline;">emmahao2022@gmail.com</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <form class="contact-form glass-panel" id="inquiry-form" novalidate>
+          <div class="form-success-msg" id="form-success" data-i18n="contact_success">Thank you! Your message has been sent successfully. We will get back to you shortly.</div>
+          
+          <div class="form-group">
+            <label for="form-name" data-i18n="contact_label_name">Full Name</label>
+            <input type="text" id="form-name" data-i18n="contact_label_name" placeholder="Full Name" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="form-email" data-i18n="contact_label_email">Email Address</label>
+            <input type="email" id="form-email" data-i18n="contact_label_email" placeholder="Email Address" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="form-role" data-i18n="contact_label_role">I am a...</label>
+            <select id="form-role" required>
+              <option value="parent" data-i18n="contact_role_parent">Parent / Guardian</option>
+              <option value="educator" data-i18n="contact_role_educator">Educator / Teacher</option>
+              <option value="partner" data-i18n="contact_role_partner">School / Organization Partner</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="form-message" data-i18n="contact_label_message">Message</label>
+            <textarea id="form-message" data-i18n="contact_label_message" rows="4" placeholder="Message" required></textarea>
+          </div>
+          
+          <button type="submit" class="btn btn-primary" id="btn-submit" data-i18n="contact_submit">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container-width">
+      <p data-i18n="footer_text">© 2026 Bilingual Early Mathematics Innovation Center (BEMIC). All rights reserved. Directed by Dr. Haiping Hao.</p>
+    </div>
+  </footer>
+
+  <!-- Custom Cursor Elements -->
+  <div class="custom-cursor-dot" id="custom-cursor-dot"></div>
+  <div class="custom-cursor-ring" id="custom-cursor-ring"></div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
