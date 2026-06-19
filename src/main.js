@@ -1,6 +1,7 @@
 import './style.css';
 import { initHeroCanvas } from './hero-canvas.js';
 import { SuanpanAbacus } from './abacus.js';
+import { TangramGame } from './tangram.js';
 import { TranslationSystem } from './bilingual.js';
 import { soundSynth } from './sound.js';
 
@@ -378,6 +379,30 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
   
+  // --- 3D Tangram Game System ---
+  const tangramVictory = document.getElementById('tangram-victory');
+  const btnTangramReset = document.getElementById('btn-tangram-reset');
+  const tangramShapeSelect = document.getElementById('tangram-shape-select');
+
+  const tangram = new TangramGame('tangram-canvas', () => {
+    // Solve callback: show victory banner, play success sound
+    tangramVictory.classList.add('active');
+    playSuccessChime();
+  });
+  tangram.init();
+
+  btnTangramReset.addEventListener('click', () => {
+    soundSynth.playClack(0.7);
+    tangramVictory.classList.remove('active');
+    tangram.reset();
+  });
+
+  tangramShapeSelect.addEventListener('change', (e) => {
+    soundSynth.playClack(0.7);
+    tangramVictory.classList.remove('active');
+    tangram.loadPuzzle(e.target.value);
+  });
+
   setupCardSpotlight();
 
   // 6. Intersection Observer for Scroll Reveals
@@ -542,5 +567,6 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('beforeunload', () => {
     cleanHeroCanvas();
     abacus.destroy();
+    tangram.destroy();
   });
 });
