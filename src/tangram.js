@@ -276,6 +276,7 @@ export class TangramGame {
     // We place them on left & right sides of screen so the center board is clean
     this.pieces.forEach((piece, i) => {
       piece.userData.snapped = false;
+      piece.userData.targetSlot = null;
       
       // Randomize side (left or right)
       const onLeft = i % 2 === 0;
@@ -381,40 +382,61 @@ export class TangramGame {
     }
   }
 
+  getShapeType(id) {
+    if (id === 0 || id === 1) return 'large_triangle';
+    if (id === 2) return 'medium_triangle';
+    if (id === 3 || id === 4) return 'small_triangle';
+    if (id === 5) return 'square';
+    if (id === 6) return 'parallelogram';
+    return 'unknown';
+  }
+
   checkSnap(piece) {
     if (piece.userData.snapped) return;
 
     const id = piece.userData.id;
-    const target = TANGRAM_PUZZLES[this.activePuzzle][id];
+    const type = this.getShapeType(id);
+    const targets = TANGRAM_PUZZLES[this.activePuzzle];
 
-    // Calculate distance distance to target shadow
-    const dist = Math.hypot(piece.position.x - target.x, piece.position.y - target.y);
-    
-    // Calculate rotation difference (modulo 2PI)
-    const rotDiff = Math.abs((piece.rotation.z - target.rot) % (Math.PI * 2));
-    const rotDiffNorm = Math.min(rotDiff, Math.PI * 2 - rotDiff);
+    // Find all target slots of this shape type
+    const matchingSlots = [];
+    for (let j = 0; j < 7; j++) {
+      if (this.getShapeType(j) === type) {
+        matchingSlots.push(j);
+      }
+    }
 
-    // Loosened snapping thresholds for preschool children: distance < 0.85 units
-    // For the square (id === 5), we ignore rotation grading entirely due to 4-fold symmetry.
-    const isSquare = id === 5;
-    const rotationFits = isSquare || (rotDiffNorm < 0.52);
+    // Filter out slots that are already occupied by another snapped piece
+    const unoccupiedSlots = matchingSlots.filter(slotIndex => {
+      return !this.pieces.some(p => p.userData.snapped && p.userData.targetSlot === slotIndex);
+    });
 
-    if (dist < 0.85 && rotationFits) {
+    if (unoccupiedSlots.length === 0) return;
+
+    // Find the closest unoccupied slot of the matching shape type
+    let closestSlot = -1;
+    let minDistance = Infinity;
+
+    unoccupiedSlots.forEach(slotIndex => {
+      const target = targets[slotIndex];
+      const dist = Math.hypot(piece.position.x - target.x, piece.position.y - target.y);
+      if (dist < minDistance) {
+        minDistance = dist;
+        closestSlot = slotIndex;
+      }
+    });
+
+    // Snapping threshold: distance < 0.85 units (ignoring rotation entirely for grading)
+    if (closestSlot !== -1 && minDistance < 0.85) {
+      const target = targets[closestSlot];
       piece.position.set(target.x, target.y, 0.05);
       
-      if (isSquare) {
-        // Snap square to the nearest symmetric 90-degree alignment relative to target
-        const diff = piece.rotation.z - target.rot;
-        const offset = Math.round(diff / (Math.PI / 2)) * (Math.PI / 2);
-        const finalRot = target.rot + offset;
-        piece.rotation.z = finalRot;
-        piece.userData.targetRot = finalRot;
-      } else {
-        piece.rotation.z = target.rot;
-        piece.userData.targetRot = target.rot;
-      }
+      // Auto-align rotation to the target rotation
+      piece.rotation.z = target.rot;
+      piece.userData.targetRot = target.rot;
 
       piece.userData.snapped = true;
+      piece.userData.targetSlot = closestSlot; // Track occupied slot
       piece.userData.velocity = 0;
       piece.userData.rotVelocity = 0;
 
