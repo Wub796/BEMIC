@@ -383,23 +383,52 @@ document.addEventListener('DOMContentLoaded', () => {
   const tangramVictory = document.getElementById('tangram-victory');
   const btnTangramReset = document.getElementById('btn-tangram-reset');
   const tangramShapeSelect = document.getElementById('tangram-shape-select');
+  const tangramCompliment = document.getElementById('tangram-compliment');
 
-  const tangram = new TangramGame('tangram-canvas', () => {
-    // Solve callback: show victory banner, play success sound
-    tangramVictory.classList.add('active');
-    playSuccessChime();
-  });
+  const complimentsEn = ["Good job!", "Awesome!", "Nice move!", "Fantastic!", "Great spatial skill!", "You got it!"];
+  const complimentsZh = ["真棒！", "太厉害了！", "真聪明！", "非常好！", "空间感真好！", "做得对！"];
+  let complimentTimeout = null;
+
+  const tangram = new TangramGame(
+    'tangram-canvas', 
+    () => {
+      // Solve callback: show victory banner, play success sound
+      if (complimentTimeout) clearTimeout(complimentTimeout);
+      tangramCompliment.classList.remove('active');
+      tangramVictory.classList.add('active');
+      playSuccessChime();
+    },
+    (snappedCount) => {
+      // Snap callback: show random encouragements
+      if (snappedCount > 0 && snappedCount < 7) {
+        const randIdx = Math.floor(Math.random() * complimentsEn.length);
+        const text = translator.currentLanguage === 'zh' ? complimentsZh[randIdx] : complimentsEn[randIdx];
+        
+        tangramCompliment.textContent = text;
+        tangramCompliment.classList.add('active');
+        
+        if (complimentTimeout) clearTimeout(complimentTimeout);
+        complimentTimeout = setTimeout(() => {
+          tangramCompliment.classList.remove('active');
+        }, 1200);
+      }
+    }
+  );
   tangram.init();
 
   btnTangramReset.addEventListener('click', () => {
     soundSynth.playClack(0.7);
     tangramVictory.classList.remove('active');
+    tangramCompliment.classList.remove('active');
+    if (complimentTimeout) clearTimeout(complimentTimeout);
     tangram.reset();
   });
 
   tangramShapeSelect.addEventListener('change', (e) => {
     soundSynth.playClack(0.7);
     tangramVictory.classList.remove('active');
+    tangramCompliment.classList.remove('active');
+    if (complimentTimeout) clearTimeout(complimentTimeout);
     tangram.loadPuzzle(e.target.value);
   });
 

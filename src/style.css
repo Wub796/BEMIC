@@ -1205,3 +1205,29 @@ footer {
   color: var(--text-grey);
 }
 
+.tangram-compliment {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  background: rgba(124, 58, 237, 0.95); /* Vibrant purple */
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 0.6rem 1.5rem;
+  border-radius: 30px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.25rem;
+  box-shadow: 0 10px 25px rgba(124, 58, 237, 0.4);
+  pointer-events: none;
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 10;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.tangram-compliment.active {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+

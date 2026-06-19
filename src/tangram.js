@@ -36,9 +36,10 @@ export const TANGRAM_PUZZLES = {
 };
 
 export class TangramGame {
-  constructor(containerId, onSolve) {
+  constructor(containerId, onSolve, onSnap) {
     this.container = document.getElementById(containerId);
     this.onSolve = onSolve;
+    this.onSnap = onSnap;
     this.scene = null;
     this.camera = null;
     this.renderer = null;
@@ -393,8 +394,8 @@ export class TangramGame {
     const rotDiff = Math.abs((piece.rotation.z - target.rot) % (Math.PI * 2));
     const rotDiffNorm = Math.min(rotDiff, Math.PI * 2 - rotDiff);
 
-    // Snapping thresholds: distance < 0.45 units and rotation diff < 15 degrees (0.26 rad)
-    if (dist < 0.45 && rotDiffNorm < 0.26) {
+    // Loosened snapping thresholds for preschool children: distance < 0.85 units and rotation diff < 30 degrees (0.52 rad)
+    if (dist < 0.85 && rotDiffNorm < 0.52) {
       piece.position.set(target.x, target.y, 0.05);
       piece.rotation.z = target.rot;
       piece.userData.targetRot = target.rot;
@@ -403,6 +404,11 @@ export class TangramGame {
       piece.userData.rotVelocity = 0;
 
       soundSynth.playClack(0.9); // Distinct wood snap sound
+
+      if (this.onSnap) {
+        const snappedCount = this.pieces.filter(p => p.userData.snapped).length;
+        this.onSnap(snappedCount);
+      }
     }
   }
 
