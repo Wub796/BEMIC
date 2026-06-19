@@ -391,6 +391,12 @@ export class TangramGame {
     return 'unknown';
   }
 
+  getSymmetryAngle(id) {
+    if (id === 5) return Math.PI / 2; // Square: 90-degree symmetry
+    if (id === 6) return Math.PI;     // Parallelogram: 180-degree symmetry
+    return Math.PI * 2;               // Triangles: 360-degree symmetry
+  }
+
   checkSnap(piece) {
     if (piece.userData.snapped) return;
 
@@ -413,27 +419,40 @@ export class TangramGame {
 
     if (unoccupiedSlots.length === 0) return;
 
-    // Find the closest unoccupied slot of the matching shape type
+    // Find matching slots where both distance < 0.85 and rotation fits the shape symmetry
     let closestSlot = -1;
     let minDistance = Infinity;
 
     unoccupiedSlots.forEach(slotIndex => {
       const target = targets[slotIndex];
       const dist = Math.hypot(piece.position.x - target.x, piece.position.y - target.y);
-      if (dist < minDistance) {
-        minDistance = dist;
-        closestSlot = slotIndex;
+      
+      // Calculate rotation difference (modulo the symmetry angle of the shape)
+      const symAngle = this.getSymmetryAngle(id);
+      const diff = Math.abs((piece.rotation.z - target.rot) % symAngle);
+      const rotDiffNorm = Math.min(diff, symAngle - diff);
+      const rotationFits = rotDiffNorm < 0.52; // 30 degrees tolerance
+
+      if (dist < 0.85 && rotationFits) {
+        if (dist < minDistance) {
+          minDistance = dist;
+          closestSlot = slotIndex;
+        }
       }
     });
 
-    // Snapping threshold: distance < 0.85 units (ignoring rotation entirely for grading)
-    if (closestSlot !== -1 && minDistance < 0.85) {
+    // If we found a valid slot, snap to it
+    if (closestSlot !== -1) {
       const target = targets[closestSlot];
       piece.position.set(target.x, target.y, 0.05);
       
-      // Auto-align rotation to the target rotation
-      piece.rotation.z = target.rot;
-      piece.userData.targetRot = target.rot;
+      // Snap to the closest symmetric 90/180/360-degree rotation relative to target
+      const symAngle = this.getSymmetryAngle(id);
+      const diff = piece.rotation.z - target.rot;
+      const offset = Math.round(diff / symAngle) * symAngle;
+      const finalRot = target.rot + offset;
+      piece.rotation.z = finalRot;
+      piece.userData.targetRot = finalRot;
 
       piece.userData.snapped = true;
       piece.userData.targetSlot = closestSlot; // Track occupied slot
