@@ -56,6 +56,8 @@ export class TangramGame {
 
     this.animationFrameId = null;
     this.resizeObserver = null;
+    this.solved = false;
+    this.celebrationGroup = null;
   }
 
   init() {
@@ -110,6 +112,10 @@ export class TangramGame {
     board.position.set(0, 0, -0.2);
     board.receiveShadow = true;
     this.scene.add(board);
+
+    // Celebration particles group
+    this.celebrationGroup = new THREE.Group();
+    this.scene.add(this.celebrationGroup);
 
     // 6. Build the Game elements (Pieces & Shadows)
     this.buildGame();
@@ -245,6 +251,18 @@ export class TangramGame {
     this.activePuzzle = puzzleKey;
     const targets = TANGRAM_PUZZLES[puzzleKey];
     if (!targets) return;
+
+    this.solved = false;
+
+    // Clear celebration particles
+    if (this.celebrationGroup) {
+      while (this.celebrationGroup.children.length > 0) {
+        const p = this.celebrationGroup.children[0];
+        this.celebrationGroup.remove(p);
+        p.geometry.dispose();
+        p.material.dispose();
+      }
+    }
 
     // 1. Position the Silhouette Shadows to form the target puzzle outline
     for (let i = 0; i < 7; i++) {
@@ -389,9 +407,70 @@ export class TangramGame {
   }
 
   checkSolve() {
+    if (this.solved) return;
+
     const allSnapped = this.pieces.every(p => p.userData.snapped);
-    if (allSnapped && this.onSolve) {
-      this.onSolve();
+    if (allSnapped) {
+      this.solved = true;
+      this.triggerCelebration();
+      if (this.onSolve) {
+        this.onSolve();
+      }
+    }
+  }
+
+  triggerCelebration() {
+    // 1. Staggered celebratory hop and spin for each piece
+    this.pieces.forEach((piece, index) => {
+      piece.userData.celebrationTime = 0;
+      piece.userData.celebrationDelay = index * 0.08; // Staggered Mexican wave effect
+    });
+
+    // 2. Spawn 3D confetti burst
+    const particleCount = 80;
+    const colors = [0xffb74d, 0x81c784, 0xff8a65, 0xba68c8, 0xf06292, 0x4dd0e1, 0xffd54f, 0xffffff];
+    const particleGeo = new THREE.BoxGeometry(0.12, 0.12, 0.03);
+
+    let sumX = 0, sumY = 0;
+    this.shadows.forEach(sh => {
+      sumX += sh.position.x;
+      sumY += sh.position.y;
+    });
+    const centerX = sumX / 7;
+    const centerY = sumY / 7;
+
+    for (let i = 0; i < particleCount; i++) {
+      const col = colors[Math.floor(Math.random() * colors.length)];
+      const mat = new THREE.MeshStandardMaterial({
+        color: col,
+        roughness: 0.2,
+        metalness: 0.1,
+        transparent: true,
+        opacity: 1.0,
+        side: THREE.DoubleSide
+      });
+      const mesh = new THREE.Mesh(particleGeo, mat);
+
+      mesh.position.set(
+        centerX + (Math.random() - 0.5) * 1.5,
+        centerY + (Math.random() - 0.5) * 1.5,
+        0.2
+      );
+
+      const angle = Math.random() * Math.PI * 2;
+      const speed = 2 + Math.random() * 4;
+      mesh.userData = {
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed + 2.5, // Shoot upwards
+        vz: 2 + Math.random() * 5,
+        rotX: (Math.random() - 0.5) * 8,
+        rotY: (Math.random() - 0.5) * 8,
+        rotZ: (Math.random() - 0.5) * 8,
+        life: 1.0,
+        decay: 0.01 + Math.random() * 0.015
+      };
+
+      this.celebrationGroup.add(mesh);
     }
   }
 
@@ -414,6 +493,29 @@ export class TangramGame {
     this.pieces.forEach(p => {
       if (p === this.activePiece) return; // Skip currently dragged piece
 
+      // Celebratory hop & spin animation
+      if (this.solved && p.userData.celebrationTime !== undefined) {
+        if (p.userData.celebrationDelay > 0) {
+          p.userData.celebrationDelay -= 0.016;
+          return;
+        }
+
+        p.userData.celebrationTime += 0.016;
+        const t = p.userData.celebrationTime;
+
+        if (t < 1.0) {
+          const height = Math.sin(t * Math.PI) * 1.5;
+          p.position.z = 0.05 + height;
+          p.rotation.z = p.userData.targetRot + t * Math.PI * 2;
+        } else {
+          p.position.z = 0.05;
+          p.rotation.z = p.userData.targetRot;
+          delete p.userData.celebrationTime;
+          delete p.userData.celebrationDelay;
+        }
+        return;
+      }
+
       const targetRot = p.userData.targetRot;
       const rotDisp = targetRot - p.rotation.z;
 
@@ -428,6 +530,33 @@ export class TangramGame {
       }
     });
 
+    // Update celebration particles
+    if (this.celebrationGroup && this.celebrationGroup.children.length > 0) {
+      for (let i = this.celebrationGroup.children.length - 1; i >= 0; i--) {
+        const p = this.celebrationGroup.children[i];
+        p.userData.life -= p.userData.decay;
+
+        if (p.userData.life <= 0) {
+          this.celebrationGroup.remove(p);
+          p.geometry.dispose();
+          p.material.dispose();
+        } else {
+          p.userData.vy -= 0.16; // gravity Y
+          p.userData.vz -= 0.1;  // gravity Z
+          
+          p.position.x += p.userData.vx * 0.016;
+          p.position.y += p.userData.vy * 0.016;
+          p.position.z += p.userData.vz * 0.016;
+          
+          p.rotation.x += p.userData.rotX * 0.016;
+          p.rotation.y += p.userData.rotY * 0.016;
+          p.rotation.z += p.userData.rotZ * 0.016;
+          
+          p.material.opacity = p.userData.life;
+        }
+      }
+    }
+
     this.renderer.render(this.scene, this.camera);
   }
 
@@ -437,6 +566,15 @@ export class TangramGame {
     }
     if (this.resizeObserver) {
       this.resizeObserver.disconnect();
+    }
+    if (this.celebrationGroup) {
+      while (this.celebrationGroup.children.length > 0) {
+        const p = this.celebrationGroup.children[0];
+        this.celebrationGroup.remove(p);
+        p.geometry.dispose();
+        p.material.dispose();
+      }
+      this.scene.remove(this.celebrationGroup);
     }
     if (this.renderer && this.renderer.domElement && this.renderer.domElement.parentNode) {
       this.renderer.domElement.parentNode.removeChild(this.renderer.domElement);
