@@ -355,6 +355,7 @@ nav {
   height: 100%;
   z-index: 1;
   pointer-events: none;
+  will-change: transform;
 }
 
 .hero-content {
@@ -364,7 +365,6 @@ nav {
   max-width: 850px;
   margin: 0 auto;
   padding: 0 2rem;
-  margin-top: 4rem;
 }
 
 .hero-title {
@@ -501,6 +501,12 @@ nav {
   align-items: stretch;
 }
 
+/* Allow grid children to shrink below their content's min-content width */
+.abacus-playground > *,
+.tangram-playground > * {
+  min-width: 0;
+}
+
 .abacus-canvas-wrap {
   position: relative;
   height: 520px;
@@ -605,12 +611,14 @@ nav {
 
 .hud-buttons {
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
 }
 
 .hud-buttons .btn {
-  flex: 1;
+  flex: 1 1 auto;
   justify-content: center;
+  white-space: nowrap;
 }
 
 /* Challenge Mode Panel */
@@ -780,7 +788,7 @@ nav {
   margin-bottom: 1rem;
 }
 
-.contact-text p {
+.contact-text > p {
   font-size: 1.1rem;
   margin-bottom: 3rem;
 }
@@ -819,6 +827,7 @@ nav {
   font-size: 1rem;
   color: var(--text-white);
   font-weight: 500;
+  margin-bottom: 0;
 }
 
 .contact-form {
@@ -927,6 +936,39 @@ footer {
   transform: translateY(0);
 }
 
+/* Staggered cascade for card grids inside reveal sections */
+.scroll-reveal:not(.reveal-active) .pillars-grid > *,
+.scroll-reveal:not(.reveal-active) .research-grid > * {
+  opacity: 0;
+  transform: translateY(26px);
+}
+
+.scroll-reveal.reveal-active .pillars-grid > *,
+.scroll-reveal.reveal-active .research-grid > * {
+  animation: cardRise 0.7s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+@keyframes cardRise {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+}
+
+.scroll-reveal.reveal-active .pillars-grid > :nth-child(2),
+.scroll-reveal.reveal-active .research-grid > :nth-child(2) {
+  animation-delay: 0.12s;
+}
+
+.scroll-reveal.reveal-active .pillars-grid > :nth-child(3),
+.scroll-reveal.reveal-active .research-grid > :nth-child(3) {
+  animation-delay: 0.24s;
+}
+
+.scroll-reveal.reveal-active .pillars-grid > :nth-child(4) {
+  animation-delay: 0.36s;
+}
+
 /* Reduced Motion Override for Accessibility */
 @media (prefers-reduced-motion: reduce) {
   * {
@@ -967,6 +1009,21 @@ footer {
     grid-template-columns: 1fr;
     gap: 4rem;
   }
+}
+
+/* Scroll progress indicator */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  z-index: 1200;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  pointer-events: none;
+  box-shadow: 0 0 12px rgba(0, 242, 254, 0.4);
 }
 
 @media (max-width: 768px) {
@@ -1010,6 +1067,18 @@ footer {
   
   .contact-form {
     padding: 2rem 1.5rem;
+  }
+}
+
+@media (max-width: 520px) {
+  .hero-ctas {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-ctas .btn {
+    width: 100%;
+    justify-content: center;
   }
 }
 

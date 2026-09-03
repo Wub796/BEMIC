@@ -449,6 +449,50 @@ document.addEventListener('DOMContentLoaded', () => {
 
   scrollElements.forEach(el => scrollObserver.observe(el));
 
+  // 6b. Scroll Progress Bar + Hero Parallax (rAF-throttled, passive)
+  const scrollProgress = document.getElementById('scroll-progress');
+  const heroCanvasContainer = document.getElementById('hero-canvas-container');
+  const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let scrollFxTicking = false;
+
+  const updateScrollFx = () => {
+    scrollFxTicking = false;
+    const docEl = document.documentElement;
+    const maxScroll = docEl.scrollHeight - window.innerHeight;
+    const y = window.scrollY || docEl.scrollTop || 0;
+
+    // Progress indicator scaleX(0 -> 1)
+    if (scrollProgress) {
+      const p = maxScroll > 0 ? Math.min(1, Math.max(0, y / maxScroll)) : 0;
+      scrollProgress.style.transform = `scaleX(${p})`;
+    }
+
+    // Parallax: hero background lingers (drifts down slower than the page scrolls).
+    // The drift is always < 1x scroll, so the canvas edge never becomes visible.
+    if (heroCanvasContainer && !reduceMotionQuery.matches) {
+      const offset = Math.min(90, y * 0.16);
+      heroCanvasContainer.style.transform = `translate3d(0, ${offset}px, 0)`;
+    }
+  };
+
+  window.addEventListener('scroll', () => {
+    if (!scrollFxTicking) {
+      scrollFxTicking = true;
+      requestAnimationFrame(updateScrollFx);
+    }
+  }, { passive: true });
+
+  // Keep progress in sync on resize/reflow and initial paint
+  if (scrollProgress || heroCanvasContainer) {
+    window.addEventListener('resize', () => {
+      if (!scrollFxTicking) {
+        scrollFxTicking = true;
+        requestAnimationFrame(updateScrollFx);
+      }
+    }, { passive: true });
+    updateScrollFx();
+  }
+
   // 7. Fallback Scroll Listener for Header Shrink (Firefox support)
   if (!CSS.supports('(animation-timeline: scroll()) and (animation-range: 0% 100%)')) {
     const header = document.querySelector('header');
