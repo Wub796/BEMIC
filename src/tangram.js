@@ -5,33 +5,38 @@ import { soundSynth } from './sound.js';
 // Rod 0..6 represents the 7 pieces in the following order:
 // 0: Large Triangle 1, 1: Large Triangle 2, 2: Medium Triangle, 
 // 3: Small Triangle 1, 4: Small Triangle 2, 5: Square, 6: Parallelogram
+// Exact tilings: each silhouette is the 7 pieces tiled with no gaps and no
+// overlaps (verified programmatically), so the grey target shapes are precise.
 export const TANGRAM_PUZZLES = {
+  // Classic 4x4 square split along the diagonal.
   square: [
-    { x: -1.0, y: 1.0, rot: -Math.PI / 2 },    // LT1
-    { x: 1.0, y: 1.0, rot: Math.PI },          // LT2
-    { x: 1.414, y: -1.414, rot: Math.PI / 4 }, // MT
-    { x: -1.0, y: -1.0, rot: 0 },              // ST1
-    { x: 0.0, y: 0.0, rot: -Math.PI / 2 },     // ST2
-    { x: 0.0, y: -1.414, rot: Math.PI / 4 },   // SQ
-    { x: -1.0, y: 0.0, rot: -Math.PI / 4 }     // PA
+    { x: -1.3333, y: 0, rot: -Math.PI / 2 },     // LT1
+    { x: 0, y: 1.3333, rot: Math.PI },           // LT2
+    { x: 1.3333, y: -1.3333, rot: -3 * Math.PI / 4 }, // MT
+    { x: 0, y: -0.6667, rot: 0 },                // ST1
+    { x: 1.6667, y: 1, rot: Math.PI / 2 },       // ST2
+    { x: 1, y: 0, rot: -Math.PI / 4 },           // SQ
+    { x: -0.5, y: -1.5, rot: Math.PI }           // PA
   ],
+  // Cottage: two large-triangle roof halves over a low 5-piece body.
   house: [
-    { x: -1.0, y: 0.5, rot: 0 },               // LT1
-    { x: 1.0, y: 0.5, rot: -Math.PI / 2 },     // LT2
-    { x: 0.0, y: 2.0, rot: Math.PI },          // MT
-    { x: -1.5, y: -1.5, rot: Math.PI / 2 },    // ST1
-    { x: 1.5, y: -1.5, rot: 0 },               // ST2
-    { x: 0.0, y: -1.0, rot: 0 },               // SQ
-    { x: 0.0, y: -2.2, rot: Math.PI / 2 }      // PA
+    { x: -0.9428, y: 0.2357, rot: -3 * Math.PI / 4 }, // LT1 (roof left)
+    { x: 0.9428, y: 0.2357, rot: 3 * Math.PI / 4 },   // LT2 (roof right)
+    { x: 0, y: -1.1785, rot: Math.PI },               // MT
+    { x: -2.357, y: -1.6499, rot: 3 * Math.PI / 4 },  // ST1
+    { x: 0.9428, y: -1.6499, rot: -3 * Math.PI / 4 }, // ST2
+    { x: 2.1213, y: -1.4142, rot: 0 },                // SQ
+    { x: -1.4142, y: -1.4142, rot: 3 * Math.PI / 4 }  // PA
   ],
+  // Duck facing right: body, raised neck, head with bill, tail up.
   duck: [
-    { x: -1.5, y: 1.0, rot: Math.PI / 4 },     // LT1
-    { x: 0.5, y: 0.0, rot: -Math.PI / 4 },     // LT2
-    { x: -1.0, y: -1.5, rot: Math.PI / 2 },    // MT
-    { x: 1.5, y: 2.5, rot: -Math.PI / 2 },     // ST1
-    { x: 1.0, y: 1.2, rot: 0 },                // ST2
-    { x: 2.0, y: 1.8, rot: Math.PI / 4 },      // SQ
-    { x: -0.5, y: -2.5, rot: Math.PI / 2 }     // PA
+    { x: -0.2071, y: -0.2475, rot: 0 },              // LT1
+    { x: -0.2071, y: -1.5809, rot: Math.PI },        // LT2
+    { x: -1.5404, y: 0.4191, rot: Math.PI / 4 },     // MT
+    { x: 1.4596, y: 0.0858, rot: Math.PI / 2 },      // ST1 (head)
+    { x: -2.5404, y: 0.0858, rot: Math.PI / 2 },     // ST2 (tail)
+    { x: 2.5, y: 0.3787, rot: -Math.PI / 2 },        // SQ (bill)
+    { x: 1.5, y: 1.5, rot: Math.PI / 4 }             // PA (neck)
   ]
 };
 
@@ -375,11 +380,28 @@ export class TangramGame {
         // Rotate piece by 45 degrees
         piece.userData.targetRot = piece.rotation.z + Math.PI / 4;
         soundSynth.playClack(0.6);
-        
-        // Check snap immediately after rotation animation completes
-        setTimeout(() => this.checkSnap(piece), 200);
+
+        // The rotation spring animates toward targetRot over several hundred
+        // milliseconds, so wait until it settles before testing for a snap;
+        // otherwise the check reads a mid-animation angle and misses.
+        this.scheduleSnapCheck(piece);
       }
     }
+  }
+
+  scheduleSnapCheck(piece) {
+    // Poll the spring each frame-ish; fall back after 1.5s so the check always runs.
+    const startedAt = performance.now();
+    const tick = () => {
+      const settled = Math.abs(piece.userData.targetRot - piece.rotation.z) < 0.01 &&
+                      Math.abs(piece.userData.rotVelocity) < 0.01;
+      if (settled || performance.now() - startedAt >= 1500) {
+        this.checkSnap(piece);
+      } else {
+        requestAnimationFrame(tick);
+      }
+    };
+    requestAnimationFrame(tick);
   }
 
   getShapeType(id) {
